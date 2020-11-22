@@ -4,6 +4,10 @@ node ('appserver-ubuntu'){
         /* Let's make sure we have the repository cloned to our workspace */
        checkout scm
     }  
+    
+    stage ('SAST-scan') {
+        build 'SECURITY-SAST-SNYK'
+    }
    
     stage('Build-and-Tag') {
     /* This builds the actual image; synonymous to
@@ -22,4 +26,8 @@ node ('appserver-ubuntu'){
          sh "docker-compose down"
          sh "docker-compose up -d"	
       }
+    
+    stage (DAST-scan) {
+        build 'SECURITY-DAST-OWASP_ZAP'
+    }
 }
